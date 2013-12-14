@@ -68,7 +68,8 @@ public class BrainBase extends WarBrain{
 		for(Percept p : liste){
 			if (p.getTeam()!= getTeam() && p.getType().equals("WarRocketLauncher")){
 				etat = "defensif";
-			}///////////LE POP de scout/expl
+				broadcastMessage("WarExplorer","retourRapide",null);
+			}
 		}
 		return "eat";
 	}
@@ -104,6 +105,7 @@ public class BrainBase extends WarBrain{
 		}
 		if (!ennemiSpoted){
 			etat = "offensif";
+			broadcastMessage("WarExplorer","retourEco",null);
 		}
 		return "eat";
 	}
