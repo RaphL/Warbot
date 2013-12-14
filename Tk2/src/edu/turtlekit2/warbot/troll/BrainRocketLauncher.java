@@ -26,7 +26,7 @@ public class BrainRocketLauncher extends WarBrain{
 		List<Percept> listeP = getPercepts();
 		List<WarMessage> listeM = getMessage();
 		
-		if(this.getEnergy()<8000-200){
+		if(!this.emptyBag()&&this.getEnergy()<8000-200){
 			return "eat";
 		}
 		
@@ -48,6 +48,11 @@ public class BrainRocketLauncher extends WarBrain{
 	}
 	
 	private String escouad(List<Percept> listeP, List<WarMessage> listeM) {
+		if (this.getEnergy()<8000/2){
+			String infos[] = new String[1];
+			infos[0]=Integer.toString(this.getEnergy());
+			this.broadcastMessage("WarExplorer", "needHeal", infos);
+		}
 		for(WarMessage m:listeM){
 			if(m.getMessage().equals("backDef")){
 				if (m.getDistance()<300){
@@ -57,7 +62,7 @@ public class BrainRocketLauncher extends WarBrain{
 				}
 			}
 			if(m.getMessage().equals("ennemiHere")){
-				System.out.println("RocketLauncher:"+this.getID()+" reception cible exploreur:"+m.getSender());
+				//System.out.println("RocketLauncher:"+this.getID()+" reception cible exploreur:"+m.getSender());
 				int angleEnnemi =Integer.parseInt(m.getContent()[0]);
 				int distanceEnnemi =Integer.parseInt(m.getContent()[1]);
 				int angleAllie=m.getAngle();
@@ -134,18 +139,18 @@ public class BrainRocketLauncher extends WarBrain{
 		}
 		for(WarMessage m:listeM){
 			if (m.getMessage().equals("etatEscouade")){
-				System.out.println("RocketLauncher:"+this.getID()+" confirmation escouade exploreur:"+m.getSender());
+				//System.out.println("RocketLauncher:"+this.getID()+" confirmation escouade exploreur:"+m.getSender());
 				etat ="escouade";
 				setHeading(m.getAngle());
 				return "move";
 			}
 			if (m.getMessage().equals("EstTuDispoEscouade")){
-				System.out.println("RocketLauncher:"+this.getID()+" reception appel exploreur:"+m.getSender());
+				//System.out.println("RocketLauncher:"+this.getID()+" reception appel exploreur:"+m.getSender());
 				if (evalReq()){
-					System.out.println("je suis dispo");
+					//System.out.println("je suis dispo");
 					reply(m,"DispoEscouade",null);
 				}else{
-					System.out.println("je suis pas dispo");
+					//System.out.println("je suis pas dispo");
 				}
 			}
 			if(m.getMessage().equals("backDef")){
