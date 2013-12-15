@@ -145,6 +145,7 @@ public class BrainRocketLauncher extends WarBrain{
 				//System.out.println("RocketLauncher:"+this.getID()+" confirmation escouade exploreur:"+m.getSender());
 				Rocketescouade=new Vector<Integer>();
 				Healescouade=new Vector<Integer>();
+				/*
 				String content[] = m.getContent();
 				int nbRockets=Integer.parseInt(content[0]);
 				for (int i=1; i<nbRockets+1;i++){
@@ -153,6 +154,7 @@ public class BrainRocketLauncher extends WarBrain{
 				for (int i=nbRockets+1; i<content.length;i++){
 					Healescouade.add(Integer.parseInt(content[i]));
 				}
+				*/
 				etat ="escouade";
 				setHeading(m.getAngle());
 				return "move";

@@ -94,51 +94,72 @@ public class BrainExplorer extends WarBrain{
 	
 
 	public String escouade(List<Percept> _liste, List<WarMessage> _listeM){
+		if (Rocketescouade==null){
+			Rocketescouade = new Vector<Integer>();
+		}
+		if (Healescouade==null){
+			Healescouade = new Vector<Integer>();
+		}
+		
 		for (WarMessage m : _listeM){
-			if (m.getMessage().equals("DispoEscouade") && Rocketescouade.size()<4){
-				Rocketescouade.add(m.getSender());
-				String infos[] = new String[Rocketescouade.size()+Healescouade.size()+2];
-				infos[0]=Integer.toString(Rocketescouade.size());
-				infos[1]=Integer.toString(Healescouade.size());
-				if (Rocketescouade!=null){
-					for (int i=2;i<Rocketescouade.size()+2;i++){
-						infos[i]=Integer.toString(Rocketescouade.get(i-2));
-					}
-				}
-				if (Healescouade!=null){
-					for (int j=Rocketescouade.size()+2; j<Healescouade.size()+Rocketescouade.size()+2;j++){
-						infos[j]=Integer.toString(Healescouade.get(j-Rocketescouade.size()+2));
-					}
-				}
-				reply(m, "etatEscouade", infos);
-			}
-			if (m.getMessage().equals("DispoHealer") && Healescouade.size()<1){
-				Healescouade.add(m.getSender());
-				String infos[] = new String[Rocketescouade.size()+Healescouade.size()+2];
-				infos[0]=Integer.toString(Rocketescouade.size());
-				infos[1]=Integer.toString(Healescouade.size());
-				if (Rocketescouade!=null){
-					for (int i=2;i<Rocketescouade.size()+2;i++){
-						infos[i]=Integer.toString(Rocketescouade.get(i-2));
-					}
-				}
-				if (Healescouade!=null){
-					for (int j=Rocketescouade.size()+2; j<Healescouade.size()+Rocketescouade.size()+2;j++){
-						infos[j]=Integer.toString(Healescouade.get(j-Rocketescouade.size()+2));
-					}
-				}
+			
+			if (m.getMessage().equals("DispoEscouade") && Rocketescouade.size()<4){///////////////////////////////
+				/*
+				Integer sender = new Integer(m.getSender());
+				Rocketescouade.add(sender);
 				
-				reply(m, "etatHealer", infos);
+				//affiche(Rocketescouade);
+				String infos[] = new String[Rocketescouade.size()+Healescouade.size()+2];
+				infos[0]=Integer.toString(Rocketescouade.size());
+				infos[1]=Integer.toString(Healescouade.size());
+				if (Rocketescouade!=null){
+					for (int i=2;i<Rocketescouade.size()+2;i++){
+						infos[i]=Integer.toString(Rocketescouade.get(i-2));
+					}
+				}
+				if (Healescouade!=null){
+					for (int j=Rocketescouade.size()+2; j<Healescouade.size()+Rocketescouade.size()+2;j++){
+						infos[j]=Integer.toString(Healescouade.get(j-Rocketescouade.size()+2));
+					}
+				}
+				*/
+				reply(m, "etatEscouade", null);
+			}
+			
+			if (m.getMessage().equals("DispoHealer") && Healescouade.size()<1){//////////////////////////////////
+				System.out.println("dispoheal");
+				/*
+				Integer sender = new Integer(m.getSender());
+				Healescouade.add(sender);
+				
+				String infos[] = new String[Rocketescouade.size()+Healescouade.size()+2];
+				infos[0]=Integer.toString(Rocketescouade.size());
+				infos[1]=Integer.toString(Healescouade.size());
+				if (Rocketescouade!=null){
+					for (int i=2;i<Rocketescouade.size()+2;i++){
+						infos[i]=Integer.toString(Rocketescouade.get(i-2));
+					}
+				}
+				if (Healescouade!=null){
+					for (int j=Rocketescouade.size()+2; j<Healescouade.size()+Rocketescouade.size()+2;j++){
+						infos[j]=Integer.toString(Healescouade.get(j-Rocketescouade.size()+2));
+					}
+				}
+				*/
+				reply(m, "etatHealer", null);
 			}			
 		}
 		if (Rocketescouade!=null && Rocketescouade.size()<4){
-			System.out.println("demande de rocket");
+			//System.out.println("demande de rocket");
 			broadcastMessage("WarRocketLauncher", "EstTuDispoEscouade", null);
+			//System.out.println("demande de rocket envoyé");
 		}
 		if (Healescouade!=null && Healescouade.size()<1){
-			System.out.println("demande de healer");
+			//System.out.println("demande de healer");
 			broadcastMessage("WarExplorer", "needHealer", null);
+			//System.out.println("demande de healer envoyé");
 		}
+		
 		for (Percept p: _liste){
 			if (p.getId()==IDtarget){
 				
@@ -147,7 +168,7 @@ public class BrainExplorer extends WarBrain{
 				infos[1]=Integer.toString(p.getDistance());
 				 
 				if (Rocketescouade!=null && Rocketescouade.size()>0){
-					System.out.println("infoRocket");
+					//System.out.println("infoRocket");
 					for (int i=0;i<Rocketescouade.size();i++){
 						//System.out.println("Explorer:"+this.getID()+" demande tir à RocketLauncher:"+escouade.get(i));
 						sendMessage(Rocketescouade.get(i), "ennemiHere", infos);
@@ -165,48 +186,28 @@ public class BrainExplorer extends WarBrain{
 				}
 			}
 		}
+		
 		return "move";
 	}
 	
-
-	
-	public String scout(List<Percept> _liste, List<WarMessage> _listeM){
-		for(Percept p:_liste){
-			if(p.getType().equals("WarRocketLauncher") && p.getTeam()!=getTeam()){
-				Rocketescouade = new Vector<Integer>();
-				Healescouade= new Vector<Integer>();
-				etat = "escouade";
-				System.out.println("je rentre en etat escouade");
-				IDtarget=p.getId();
-				
-				/*
-				String infos[] = new String[2];
-				infos[0]=Integer.toString(p.getAngle());
-				infos[1]=Integer.toString(p.getDistance());
-				this.broadcastMessage("WarRocketLauncher", "rocket ennemie", infos);
-				*/
-				if (p.getDistance()>=34){
-					this.setHeading(p.getAngle());
-					return "move";
-				}
-				else if(p.getDistance()<=31){
-					this.setHeading(p.getAngle()+180);
-					return "move";
-				}else{
-					return "idle";
-				}
-			}
+	private void affiche(Vector<Integer> healescouade2) {
+		System.out.println("debut escouade");
+		for (Integer i: healescouade2){
+			System.out.println(healescouade2.get(i));
 		}
-		return "move";
+		System.out.println("fin escouade");
 	}
-	
+
 	public String explore(List<Percept> _liste, List<WarMessage> _listeM){
 		for (WarMessage m : _listeM){
 			if(m.getMessage().equals("retourRapide")){
 				alert=1;
 			}
 			if(m.getMessage().equals("etatHealer")){
+				Rocketescouade=new Vector<Integer>();
+				Healescouade=new Vector<Integer>();
 				System.out.println("etatHealer ?");
+				/*
 				String content[] = m.getContent();
 				int nbRockets=Integer.parseInt(content[0]);
 				for (int i=0; i<nbRockets;i++){
@@ -217,6 +218,7 @@ public class BrainExplorer extends WarBrain{
 					Healescouade.add(Integer.parseInt(content[i]));
 				}
 				System.out.println("etatHealer ?3");
+				*/
 				etat = "heal";
 				this.setHeading(m.getAngle());
 				return "move";
@@ -257,6 +259,38 @@ public class BrainExplorer extends WarBrain{
 		}
 		return "move";
 	}
+	
+
+	public String scout(List<Percept> _liste, List<WarMessage> _listeM){
+		for(Percept p:_liste){
+			if(p.getType().equals("WarRocketLauncher") && p.getTeam()!=getTeam()){
+				Rocketescouade = new Vector<Integer>();
+				Healescouade= new Vector<Integer>();
+				etat = "escouade";
+				System.out.println("je rentre en etat escouade");
+				IDtarget=p.getId();
+				
+				/*
+				String infos[] = new String[2];
+				infos[0]=Integer.toString(p.getAngle());
+				infos[1]=Integer.toString(p.getDistance());
+				this.broadcastMessage("WarRocketLauncher", "rocket ennemie", infos);
+				*/
+				if (p.getDistance()>=34){
+					this.setHeading(p.getAngle());
+					return "move";
+				}
+				else if(p.getDistance()<=31){
+					this.setHeading(p.getAngle()+180);
+					return "move";
+				}else{
+					return "idle";
+				}
+			}
+		}
+		return "move";
+	}
+	
 	public String backBase(List<Percept> _liste, List<WarMessage> _listeM){
 		if (this.emptyBag()){
 			angleBase= -1;
