@@ -1,6 +1,7 @@
 package edu.turtlekit2.warbot.troll;
 
 import java.util.List;
+import java.util.Vector;
 
 import edu.turtlekit2.warbot.WarBrain;
 import edu.turtlekit2.warbot.message.WarMessage;
@@ -10,6 +11,8 @@ import edu.turtlekit2.warbot.waritems.WarFood;
 public class BrainRocketLauncher extends WarBrain{
 	
 	private String etat;
+	private Vector<Integer> Rocketescouade;
+	private Vector<Integer> Healescouade;
 	
 	public BrainRocketLauncher(){
 		etat = "explore";
@@ -140,6 +143,16 @@ public class BrainRocketLauncher extends WarBrain{
 		for(WarMessage m:listeM){
 			if (m.getMessage().equals("etatEscouade")){
 				//System.out.println("RocketLauncher:"+this.getID()+" confirmation escouade exploreur:"+m.getSender());
+				Rocketescouade=new Vector<Integer>();
+				Healescouade=new Vector<Integer>();
+				String content[] = m.getContent();
+				int nbRockets=Integer.parseInt(content[0]);
+				for (int i=1; i<nbRockets+1;i++){
+					Rocketescouade.add(Integer.parseInt(content[i]));
+				}
+				for (int i=nbRockets+1; i<content.length;i++){
+					Healescouade.add(Integer.parseInt(content[i]));
+				}
 				etat ="escouade";
 				setHeading(m.getAngle());
 				return "move";
