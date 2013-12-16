@@ -51,7 +51,7 @@ public class BrainRocketLauncher extends WarBrain{
 	}
 	
 	private String escouad(List<Percept> listeP, List<WarMessage> listeM) {
-		if (this.getEnergy()<8000/2){
+		if (this.getEnergy()<8000){
 			String infos[] = new String[1];
 			infos[0]=Integer.toString(this.getEnergy());
 			this.broadcastMessage("WarExplorer", "needHeal", infos);

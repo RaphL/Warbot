@@ -70,7 +70,7 @@ public class BrainExplorer extends WarBrain{
 		}
 
 		for (WarMessage m : listeM){
-			if (!this.emptyBag() && m.getMessage().equals("needHeal")){
+			if (!this.emptyBag() && m.getMessage().equals("needHeal")){/*
 				for (int i=Rocketescouade.get(0);i<Rocketescouade.size();i++){//je repond seulement a l'escouade
 					if (m.getSender()==Rocketescouade.get(i)){
 						String[] life = m.getContent();
@@ -81,13 +81,15 @@ public class BrainExplorer extends WarBrain{
 						}
 					}
 				}
+				*/
 				/*
 				if (this.fullBag() && this.getEnergy()<200){
 					return "eat";
 				}*/
+				this.setHeading(m.getAngle());
 			}
 		}
-		refresh("heal");
+		//refresh("heal");
 		return "move";
 	}
 
